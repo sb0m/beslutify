@@ -16,100 +16,103 @@ export interface WeightData {
   weight: number;
 }
 
-const ACCESS_TOKEN =
-  "1aa199c4f2bafb5b5129578db327068acaa209bc92c4114d9884c8c2c233486b";
-const APICO_BASE_URL = "https://api.apico.dev/v1/O26sb8";
-const SHEET_ID = "1YtPNls1h0TxhQPUMdmMHIoKOoDZI7mB5-BsLeXVyQsM";
-const SHEET_NAME = "erik";
+// const ACCESS_TOKEN =
+//   "a850aeb40ed1c59efae5b123c9fcd4e43c573d99ab79d83fd3fefbe9c576680d";
+const APICO_BASE_URL = "https://api.apico.dev/v1/cUa5KM";
+const SHEET_ID = "1fkazM-Q2a8EfVcQ6qbVS9qkKdmtM-5Wd5046IHTnh90";
 
-// https://api.apico.dev/v1/O26sb8/1YtPNls1h0TxhQPUMdmMHIoKOoDZI7mB5-BsLeXVyQsM/values/erik
-const API_GET_ENDPOINT = `${APICO_BASE_URL}/${SHEET_ID}/values/${SHEET_NAME}`;
-// https://api.apico.dev/v1/O26sb8/{spreadsheetId}/values/{SheetName}:append
-const API_POST_ENDPOINT = `${APICO_BASE_URL}/${SHEET_ID}/values/${SHEET_NAME}:append`;
-// https://api.apico.dev/v1/O26sb8/{spreadsheetId}/values/{SheetName!range}
-const API_PUT_ENDPOINT = `${APICO_BASE_URL}/${SHEET_ID}/values/${SHEET_NAME}!`;
+// const API_GET_ENDPOINT = (sheet_name: string) =>
+//   `${APICO_BASE_URL}/${SHEET_ID}/values/${sheet_name}`;
+// const API_POST_ENDPOINT = (sheet_name: string) =>
+//   `${APICO_BASE_URL}/${SHEET_ID}/values/${sheet_name}:append`;
+// const API_PUT_ENDPOINT = (sheet_name: string) =>
+//   `${APICO_BASE_URL}/${SHEET_ID}/values/${sheet_name}!`;
 
-export async function fetchWeightData(): Promise<WeightData[]> {
+export async function getDecisionSubjects(): Promise<string[]> {
   try {
-    const response = await axios.get<ApicoResponse>(API_GET_ENDPOINT);
+    const response = await axios.get<ApicoResponse>(
+      `${APICO_BASE_URL}/${SHEET_ID}`
+    );
 
-    const weightData: WeightData[] = response.data.values
-      .slice(1)
-      .map((row: string[]) => {
-        const dateObj = new Date(row[0]);
-        dateObj.setHours(12, 0, 0, 0);
-
-        return {
-          date: dateObj.getTime(),
-          weight: parseFloat(row[1]),
-        };
-      });
-    console.log("API Response weightData:", weightData);
-    return weightData;
+    // @ts-expect-error huhu
+    return response.data.sheets.map((sheet: any) => sheet.properties.title);
   } catch (error) {
     console.error("Error fetching weight data from API:", error);
     throw error;
   }
 }
 
-export async function saveWeightData(
-  date: Date,
-  weight: number
-): Promise<void> {
+export async function getOptionsBySubject(subject: string): Promise<string[]> {
   try {
-    const formattedDate = date.toISOString().split("T")[0];
-
-    const payload = {
-      values: [[formattedDate, weight.toString()]],
-      majorDimension: "ROWS",
-    };
-
-    const response = await axios.post(
-      `${API_POST_ENDPOINT}?valueInputOption=USER_ENTERED`,
-      payload,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+    const response = await axios.get<ApicoResponse>(
+      `${APICO_BASE_URL}/${SHEET_ID}/values/${subject}`
     );
 
-    console.log("Data saved successfully:", response.data);
+    return response.data.values.map((row: any[]) => row[0]);
   } catch (error) {
-    console.error("Error saving weight data to API:", error);
+    console.error("Error fetching weight data from API:", error);
     throw error;
   }
 }
 
-export async function updateWeightData(
-  index: number,
-  date: Date,
-  weight: number
-): Promise<void> {
-  try {
-    const formattedDate = date.toISOString().split("T")[0];
+// export async function saveWeightData(
+//   date: Date,
+//   weight: number
+// ): Promise<void> {
+//   try {
+//     const formattedDate = date.toISOString().split("T")[0];
 
-    const payload = {
-      values: [[formattedDate, weight.toString()]],
-      majorDimension: "ROWS",
-    };
+//     const payload = {
+//       values: [[formattedDate, weight.toString()]],
+//       majorDimension: "ROWS",
+//     };
 
-    const response = await axios.put(
-      `${API_PUT_ENDPOINT}A${index + 2}:B${
-        index + 2
-      }?valueInputOption=USER_ENTERED`,
-      payload,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
-      }
-    );
+//     const response = await axios.post(
+//       `${API_POST_ENDPOINT}?valueInputOption=USER_ENTERED`,
+//       payload,
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       }
+//     );
 
-    console.log("Data updated successfully:", response.data);
-  } catch (error) {
-    console.error("Error updating weight data to API:", error);
-    throw error;
-  }
-}
+//     console.log("Data saved successfully:", response.data);
+//   } catch (error) {
+//     console.error("Error saving weight data to API:", error);
+//     throw error;
+//   }
+// }
+
+// export async function updateWeightData(
+//   index: number,
+//   date: Date,
+//   weight: number
+// ): Promise<void> {
+//   try {
+//     const formattedDate = date.toISOString().split("T")[0];
+
+//     const payload = {
+//       values: [[formattedDate, weight.toString()]],
+//       majorDimension: "ROWS",
+//     };
+
+//     const response = await axios.put(
+//       `${API_PUT_ENDPOINT}A${index + 2}:B${
+//         index + 2
+//       }?valueInputOption=USER_ENTERED`,
+//       payload,
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${ACCESS_TOKEN}`,
+//         },
+//       }
+//     );
+
+//     console.log("Data updated successfully:", response.data);
+//   } catch (error) {
+//     console.error("Error updating weight data to API:", error);
+//     throw error;
+//   }
+// }
