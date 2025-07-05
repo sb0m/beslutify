@@ -6,7 +6,7 @@ import "./index.css";
 
 const router = createBrowserRouter([
   {
-    path: "/viktis/",
+    path: "/beslutify/",
     element: <App />,
     children: [],
   },

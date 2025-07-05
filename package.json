@@ -1,9 +1,9 @@
 {
-  "name": "viktis",
+  "name": "beslutify",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://sb0m.github.io/viktis/",
+  "homepage": "https://sb0m.github.io/beslutify/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
