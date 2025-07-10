@@ -17,6 +17,7 @@ function App() {
     undefined
   );
   const [data, setData] = useState<Subject[]>([]);
+  const [showToastBackdrop, setShowToastBackdrop] = useState<boolean>(false);
 
   useEffect(() => {
     getDecisionSubjects().then((subjects: string[]) => {
@@ -34,7 +35,7 @@ function App() {
     });
   }, []);
 
-  console.log("data:", data);
+  console.log("data:", data, selectedOption);
 
   const handleMakeDecision = () => {
     const subjectData = data.find((s) => s.name === selectedSubject);
@@ -44,19 +45,33 @@ function App() {
           Math.floor(Math.random() * subjectData.options.length - 1)
         ];
       setSelectedOption(randomOption);
-      toast.success(`Decision made: ${selectedOption}`, {
-        position: "top-center",
-        autoClose: 8000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      toast(
+        <div>
+          <span style={{ fontWeight: 400, fontSize: "0.7rem" }}>
+            Decision made:{" "}
+          </span>
+          <span style={{ fontWeight: 600 }}>{randomOption}</span>
+        </div>,
+        {
+          position: "top-center",
+          autoClose: 8000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          onOpen: () => setShowToastBackdrop(true),
+          onClose: () => setShowToastBackdrop(false),
+        }
+      );
     }
   };
 
   return (
     <>
+      <div
+        className={`toast-backdrop ${showToastBackdrop ? "show" : ""}`}
+        // onClick={handleBackdropClick}
+      />
       {!showOptions &&
         subjects.map((subject) => (
           <button
@@ -71,15 +86,16 @@ function App() {
         ))}
       {showOptions && (
         <>
-          <div>{selectedSubject}</div>
-          {data
-            .find((s) => s.name === selectedSubject)
-            ?.options.map((option) => (
-              <div>{option}</div>
-            ))}
           <button className="btn" onClick={handleMakeDecision}>
             Make a decision
           </button>
+          <div className="options">
+            {data
+              .find((s) => s.name === selectedSubject)
+              ?.options.map((option) => (
+                <div>{option}</div>
+              ))}
+          </div>
           <ToastContainer />
         </>
       )}

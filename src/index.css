@@ -1,19 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+
 body {
   margin: 0;
   width: 100vw;
   height: 100vh;
   padding: 0;
+  font-family: "Quicksand", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", sans-serif;
+  font-weight: 600;
 
-  --app-bg-color: #006989;
-  --bg-color: #d9fff5;
-  --text-color-dark: #7a918d;
-  --text-color: #2f3130;
-  --highlight-color: #fcb97d;
-  --error-color: #c44141;
+  --app-bg-color: #4da1a9;
+  --bg-color: #ffa53095;
+  --text-color-bright: #f1f4f7;
+  --text-color-dark: #2e5077;
+  --text-color: #2e5077;
+  --highlight-color: #ef6f6c;
+  --error-color: #ffa630;
 }
 
 #root {
-  background-color: var(--app-bg-color);
+  background-color: var(--bg-color);
   padding: 1rem 0.5rem;
   margin: 0 auto;
   text-align: center;
@@ -22,42 +28,8 @@ body {
   width: -webkit-fill-available;
 }
 
-.chart-container {
-  margin: 0 auto;
-  background-color: var(--bg-color);
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
-  .date-inputs {
-    display: flex;
-  }
-
-  .chart-wrapper {
-    width: 100%;
-    height: 80vh;
-
-    canvas {
-      width: 95% !important;
-      margin: auto;
-    }
-  }
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 1rem;
-  color: var(--text-color);
-}
-
-.message {
-  text-align: center;
-  padding: 1rem;
-  margin: 1rem auto;
-  max-width: 600px;
-  background-color: var(--bg-color);
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  color: var(--text-color);
+.options {
+  padding: 2rem 0.5rem;
 }
 
 .error {
@@ -66,33 +38,15 @@ h1 {
   border-left: 5px solid var(--highlight-color);
 }
 
-.settings {
-  width: 100%;
-  display: flex;
-  padding: 0 0 0.5rem 0;
-  gap: 0.5rem;
-  justify-content: flex-start;
-
-  .chart-interval {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .form {
-    width: 100%;
-    display: flex;
-  }
-}
-
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--app-bg-color);
-  background-color: var(--bg-color);
+  color: var(--text-color-bright);
+  background-color: var(--app-bg-color);
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 400;
+  font-family: inherit;
   padding: 0.8rem 1rem;
   border-radius: 6px;
   border: none;
@@ -161,7 +115,7 @@ h1 {
 
 .input-field:focus {
   outline: none;
-  border-color: var(--app-bg-color);
+  border-color: var(--text-color);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(0, 105, 137, 0.2);
 }
 
@@ -217,4 +171,134 @@ input[type="date"].input-field::-webkit-calendar-picker-indicator {
 
 .input-field.error:focus {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(196, 65, 65, 0.2);
+}
+
+*
+  React-Toastify
+  custom
+  styles
+  to
+  match
+  button
+  design
+  */
+  .Toastify__toast-container {
+  width: auto;
+  max-width: 400px;
+}
+
+.Toastify__toast {
+  background-color: var(--app-bg-color);
+  color: var(--text-color-bright);
+  font-family: "Quicksand", sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  padding: 0.8rem 1rem;
+  position: relative;
+  overflow: hidden;
+  min-height: 48px;
+}
+
+.Toastify__toast::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background-color: var(--highlight-color);
+}
+
+.Toastify__toast--success {
+  background-color: var(--app-bg-color);
+}
+
+.Toastify__toast--error {
+  background-color: var(--error-color);
+}
+
+.Toastify__toast--warning {
+  background-color: var(--error-color);
+}
+
+.Toastify__toast--info {
+  background-color: var(--app-bg-color);
+}
+
+.Toastify__close-button {
+  color: var(--text-color-bright);
+  opacity: 0.7;
+}
+
+.Toastify__close-button:hover {
+  opacity: 1;
+}
+
+.Toastify__progress-bar {
+  background: var(--highlight-color);
+  height: 2px;
+}
+
+.Toastify__progress-bar--success {
+  background: var(--highlight-color);
+}
+
+.Toastify__progress-bar--error {
+  background: var(--highlight-color);
+}
+
+.Toastify__progress-bar--warning {
+  background: var(--highlight-color);
+}
+
+.Toastify__progress-bar--info {
+  background: var(--highlight-color);
+}
+
+/* Toast backdrop overlay */
+.toast-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
+  z-index: 999; /* Just below the toast container */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.toast-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Make sure the toast container is above the backdrop */
+.Toastify__toast-container {
+  z-index: 1000;
+  width: auto;
+  max-width: 400px;
+}
+
+/* Optional: Add a subtle pulse animation to the toast when backdrop is shown */
+.toast-backdrop.show ~ .Toastify__toast-container .Toastify__toast {
+  animation: subtlePulse 0.5s ease-out;
+}
+
+@keyframes subtlePulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
