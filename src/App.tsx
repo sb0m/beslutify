@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import { getDecisionSubjects, getOptionsBySubject } from "./api";
 
 interface Subject {
@@ -8,6 +9,9 @@ interface Subject {
 
 function App() {
   const [subjects, setSubjects] = useState<string[]>([]);
+  const [selectedOption, setSelectedOption] = useState<string | undefined>(
+    undefined
+  );
   const [showOptions, setShowOptions] = useState<boolean>(false);
   const [selectedSubject, setSelectedSubject] = useState<string | undefined>(
     undefined
@@ -32,6 +36,25 @@ function App() {
 
   console.log("data:", data);
 
+  const handleMakeDecision = () => {
+    const subjectData = data.find((s) => s.name === selectedSubject);
+    if (subjectData && subjectData.options.length > 0) {
+      const randomOption =
+        subjectData.options[
+          Math.floor(Math.random() * subjectData.options.length - 1)
+        ];
+      setSelectedOption(randomOption);
+      toast.success(`Decision made: ${selectedOption}`, {
+        position: "top-center",
+        autoClose: 8000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  };
+
   return (
     <>
       {!showOptions &&
@@ -54,6 +77,10 @@ function App() {
             ?.options.map((option) => (
               <div>{option}</div>
             ))}
+          <button className="btn" onClick={handleMakeDecision}>
+            Make a decision
+          </button>
+          <ToastContainer />
         </>
       )}
     </>
